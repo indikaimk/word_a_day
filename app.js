@@ -6,20 +6,15 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var newPostRouter = require('./routes/newpost');
-var addPostRouter = require('./routes/addpost');
+var postsRouter = require('./routes/posts');
 
 var app = express();
 
-var mongoose = require('mongoose');
-mongoose.connect("mongodb://localhost:27017/word-a-day")
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-var postSchema = new mongoose.Schema({body: String});
-var Post = mongoose.model('Post', postSchema);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,10 +26,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/', postsRouter);
 app.use('/users', usersRouter);
-app.use('/newpost', newPostRouter);
-app.use('/addpost', addPostRouter);
+app.use('/posts', postsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
